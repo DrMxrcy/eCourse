@@ -8,8 +8,14 @@ RUN npm install
 
 COPY ui .
 
-# Use an environment variable instead of ARG
-ENV VITE_PROD_PB_URL=${VITE_PROD_PB_URL:-http://127.0.0.1:8090}
+# Use build arguments to pass environment variables
+ARG VITE_PROD_PB_URL
+ARG VITE_DEV_PB_URL
+
+# Generate .env file based on the build arguments
+RUN echo "VITE_PROD_PB_URL=${VITE_PROD_PB_URL:-http://127.0.0.1:8090}" > .env && \
+    echo "VITE_DEV_PB_URL=${VITE_DEV_PB_URL:-http://127.0.0.1:8090}" >> .env
+
 RUN npm run build
 
 # Pocket Base
@@ -34,6 +40,9 @@ WORKDIR /app
 
 COPY --from=pb /pb pb/
 COPY --from=build /build/dist/ pb/pb_public/
+
+# Ensure the volume is correctly set up
+VOLUME /app/pb/pb_data
 
 EXPOSE 8090
 
