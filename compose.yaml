@@ -1,11 +1,15 @@
+version: '3.8'
+
 services:
-  ecourse:
-    container_name: ecourse
-    build: .
-    restart: unless-stopped
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_PROD_PB_URL=${VITE_PROD_PB_URL}
+    environment:
+      - VITE_PROD_PB_URL=${VITE_PROD_PB_URL}
     ports:
       - "8090:8090"
     volumes:
-      - ecourse:/app/pb/pb_data
-volumes:
-  ecourse:
+      - .:/app

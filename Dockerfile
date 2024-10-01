@@ -8,7 +8,8 @@ RUN npm install
 
 COPY ui .
 
-ARG VITE_PROD_PB_URL=http://127.0.0.1:8090
+# Use an environment variable instead of ARG
+ENV VITE_PROD_PB_URL=${VITE_PROD_PB_URL:-http://127.0.0.1:8090}
 RUN npm run build
 
 # Pocket Base
