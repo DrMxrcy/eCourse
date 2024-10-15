@@ -42,6 +42,7 @@
         navigate("/");
       } catch (err) {
         loginError = true;
+        console.error("Login error:", err);
       }
       isLoading = false;
     }
