@@ -3,7 +3,7 @@ export default {
     welcomeTo: "Welcome to",
     pleaseLogin: "Please login to your account",
     loginFailed: "Login failed. Please check your credentials and try again",
-    username: "Username / email",
+    username: "Username",
     usernameNotValid:
       "Username must be 3+ characters and cannot contain spaces",
     password: "Password",
