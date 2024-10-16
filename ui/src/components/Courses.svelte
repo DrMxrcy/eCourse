@@ -46,8 +46,10 @@
 
   // function to toggle opening & closing a course
   const toggleCourse = (courseId) => {
-    isOpen[courseId] = !isOpen[courseId];
-    openCourseId = courseId;
+    if ($progress.find((progressRecord) => progressRecord.course === courseId).status !== "Completed") {
+      isOpen[courseId] = !isOpen[courseId];
+      openCourseId = courseId;
+    }
   };
 
   // function to navigate to the first lesson of a course and update the status to "In Progress"
@@ -241,32 +243,32 @@
                   </h3>
                 </div>
                 <div class="flex items-center gap-3 sm:w-full">
-                  {#if progressRecord.status === "Completed" || progressRecord.status === "In Progress"}
+                  {#if progressRecord.status !== "Completed"}
+                    {#if progressRecord.status === "In Progress"}
+                      <button
+                        on:click|stopPropagation
+                        on:click={() => resetProgress(course.id)}
+                        class={loading[course.id]
+                          ? "pointer-events-none line-clamp-1 flex items-center justify-center gap-2 truncate rounded-md px-4 py-2 text-red-400 opacity-50 outline outline-[1.5px] outline-red-400/20 transition hover:bg-red-400/20 sm:w-full sm:flex-1 sm:px-0"
+                          : "line-clamp-1 flex items-center justify-center gap-2 truncate rounded-md px-4 py-2 text-red-400 outline outline-[1.5px] outline-red-400/20 transition hover:bg-red-400/20 sm:w-full sm:flex-1 sm:px-0"}
+                        >{$t("resetProgress")}
+                        {#if loading[course.id]}
+                          <Icon
+                            class="flex-shrink-0 animate-spin text-base"
+                            icon="fluent:spinner-ios-16-regular"
+                          />
+                        {/if}
+                      </button>
+                    {/if}
                     <button
                       on:click|stopPropagation
-                      on:click={() => resetProgress(course.id)}
-                      class={loading[course.id]
-                        ? "pointer-events-none line-clamp-1 flex items-center justify-center gap-2 truncate rounded-md px-4 py-2 text-red-400 opacity-50 outline outline-[1.5px] outline-red-400/20 transition hover:bg-red-400/20 sm:w-full sm:flex-1 sm:px-0"
-                        : "line-clamp-1 flex items-center justify-center gap-2 truncate rounded-md px-4 py-2 text-red-400 outline outline-[1.5px] outline-red-400/20 transition hover:bg-red-400/20 sm:w-full sm:flex-1 sm:px-0"}
-                      >{$t("resetProgress")}
-                      {#if loading[course.id]}
-                        <Icon
-                          class="flex-shrink-0 animate-spin text-base"
-                          icon="fluent:spinner-ios-16-regular"
-                        />
-                      {/if}
-                    </button>
-                  {/if}
-                  <button
-                    on:click|stopPropagation
-                    on:click={() => goToFirstLessonOfCourse(course.id)}
-                    class="line-clamp-1 truncate rounded-md bg-white/10 px-4 py-2 outline outline-[1.5px] outline-white/20 transition hover:bg-white/20 sm:w-full sm:flex-1 sm:px-0"
-                    >{progressRecord.status === "Completed"
-                      ? $t("openCourse")
-                      : progressRecord.status === "In Progress"
+                      on:click={() => goToFirstLessonOfCourse(course.id)}
+                      class="line-clamp-1 truncate rounded-md bg-white/10 px-4 py-2 outline outline-[1.5px] outline-white/20 transition hover:bg-white/20 sm:w-full sm:flex-1 sm:px-0"
+                      >{progressRecord.status === "In Progress"
                         ? $t("continueCourse")
                         : $t("startCourse")}</button
-                  >
+                    >
+                  {/if}
                 </div>
               </div>
             {/if}
