@@ -7,8 +7,6 @@ services:
       args:
         - VITE_PROD_PB_URL=https://learning-test.auspireroleplay.com/_
         - VITE_DEV_PB_URL=http://127.0.0.1:8090
-    ports:
-      - "8090:8090"
     environment:
       - VITE_PROD_PB_URL=https://learning-test.auspireroleplay.com/_
       - VITE_DEV_PB_URL=http://127.0.0.1:8090
